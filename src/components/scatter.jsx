@@ -30,6 +30,8 @@ export default class Scatter extends Component {
       yScaleSet
     } = this.props;
 
+    let defined = (d) => { return !!d.y && d.y !==0 }; // NaN, false or null are excluded
+
     // for building symbols in brush, set to circle and size to 4
     if(brushSymbol) {
       symbol = 'circle';
@@ -43,7 +45,7 @@ export default class Scatter extends Component {
             var symbol = dot.symbol? dot.symbol: defaultSymbol;
             var symbolSize = dot.symbolSize? dot.symbolSize: defaultSymbolSize;
 
-            return dot.data.map((d) => {
+            return dot.data.filter(defined).map((d) => {
               var symbolFunc = D3Shape.symbol()
                 .size(symbolSize * symbolSize)
                 .type(
